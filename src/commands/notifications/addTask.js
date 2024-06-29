@@ -1,4 +1,6 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const Task = require('../../models/task');
+
 module.exports = {
     name: 'addtask',
     description: 'Adds a task to the database',
@@ -37,28 +39,45 @@ module.exports = {
         
     ],
 
-    callback: (client, interaction) => {
-        const name = interaction.options.get('taskname').value;
-        const type = interaction.options.get('tasktype').value;
-        const deadline = interaction.options.get('deadline')?.value || 'No deadline specified';
-        const taskEmbed = new EmbedBuilder()
-            .setColor('Random')
-            .setTitle(`${name}`)
-            .addFields(
-                {
-                    name: 'Type',
-                    value: `${type}`,
-                    inline: true,
-                },
-                {
-                    name: 'Deadline',
-                    value: `${deadline}`,
-                    inline: true,
-                },
-            )
-            .setTimestamp()
-            .setFooter({ text: 'You got meowed on' });
-        console.log(` ${name} ${type} ${deadline}`);
-        interaction.reply({ embeds: [taskEmbed], ephemeral: true });
+    callback: async (client, interaction) => {
+        try {
+            const name = interaction.options.get('taskname').value;
+            const type = interaction.options.get('tasktype').value;
+            const deadline = interaction.options.get('deadline')?.value || null;
+
+            const newTask = new Task({
+                userId: interaction.user.id,
+                guildId: interaction.guild.id,
+                taskName: name,
+                taskType: type,
+                taskDeadline: deadline
+
+            })
+
+
+            await newTask.save();
+            
+            const taskEmbed = new EmbedBuilder()
+                .setColor('Random')
+                .setTitle(`${name}`)
+                .addFields(
+                    {
+                        name: 'Type',
+                        value: `${type}`,
+                        inline: true,
+                    },
+                    {
+                        name: 'Deadline',
+                        value: `${deadline || 'No deadline specified'}`,
+                        inline: true,
+                    },
+                )
+                .setTimestamp()
+                .setFooter({ text: 'You got meowed on' });
+
+            interaction.reply({ embeds: [taskEmbed], ephemeral: true });   
+        } catch (error) {
+            interaction.reply(`Error creating task: ${error}`);
+        }
     },
 };
