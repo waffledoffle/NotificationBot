@@ -32,6 +32,11 @@ module.exports = {
             required: true,
         },
         {
+            name: 'location',
+            description: 'The location this task needs to be completed at',
+            type: ApplicationCommandOptionType.String,
+        },
+        {
             name: 'deadline',
             description: 'The time a task has to be completed by',
             type: ApplicationCommandOptionType.String,
@@ -43,6 +48,7 @@ module.exports = {
         try {
             const name = interaction.options.get('taskname').value;
             const type = interaction.options.get('tasktype').value;
+            const location = interaction.options.get('location')?.value || null;
             const deadline = interaction.options.get('deadline')?.value || null;
 
             const newTask = new Task({
@@ -50,6 +56,7 @@ module.exports = {
                 guildId: interaction.guild.id,
                 taskName: name,
                 taskType: type,
+                taskLocation: location,
                 taskDeadline: deadline
 
             })
@@ -59,11 +66,22 @@ module.exports = {
             
             const taskEmbed = new EmbedBuilder()
                 .setColor('Random')
-                .setTitle(`${name}`)
+                .setTitle('Task Added:')
+                .setDescription(`${name}`)
+                .setThumbnail('https://i.imgur.com/YprbQRM.png')
                 .addFields(
+                    {
+                        name: '\u200B',
+                        value: '\u200B'
+                    },
                     {
                         name: 'Type',
                         value: `${type}`,
+                        inline: true,
+                    },
+                    {
+                        name: 'Location',
+                        value: `${location || 'No location specified'}`,
                         inline: true,
                     },
                     {
@@ -72,6 +90,7 @@ module.exports = {
                         inline: true,
                     },
                 )
+                .setImage('https://i.imgur.com/fx5RFJ0.jpeg')
                 .setTimestamp()
                 .setFooter({ text: 'You got meowed on' });
 

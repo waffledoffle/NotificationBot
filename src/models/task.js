@@ -17,6 +17,10 @@ const taskSchema = new Schema({
         type: String,
         required: true,
     },
+    taskLocation: {
+        type: String,
+        required: false,
+    },
     taskDeadline: {
         type: String,
         required: false,
