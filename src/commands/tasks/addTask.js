@@ -61,7 +61,6 @@ module.exports = {
 
             })
 
-
             await newTask.save();
             
             const taskEmbed = new EmbedBuilder()
@@ -92,11 +91,11 @@ module.exports = {
                 )
                 .setImage('https://i.imgur.com/fx5RFJ0.jpeg')
                 .setTimestamp()
-                .setFooter({ text: 'You got meowed on' });
+                .setFooter({ text: 'You got meowed on NERD' });
 
             interaction.reply({ embeds: [taskEmbed], ephemeral: true });   
         } catch (error) {
-            interaction.reply(`Error creating task: ${error}`);
+            interaction.reply( { content: `Error creating task: ${error}`, ephemeral: true });
         }
     },
 };
