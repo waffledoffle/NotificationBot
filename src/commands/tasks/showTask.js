@@ -47,13 +47,14 @@ module.exports = {
             var text = '';
 
             for (const task of allTasks) {
-                text += `**Task:** ${task.taskName}     **Task Type:** ${task.taskType}   **Task Location:** ${task.taskLocation || 'No location specified'} **Task Deadline:**  ${task.taskDeadline || 'No deadline specified'} \n\n`;
+                text += `**Task:** ${task.taskName}\n**Task Type:** ${task.taskType}\n**Task Location:** ${task.taskLocation || 'No location specified'}\n**Task Deadline:**  ${task.taskDeadline || 'No deadline specified'}
+                ----------------------------------\n`;
             }
 
             const tasksEmbed = new EmbedBuilder()
                 .setColor('Random')
                 .setTitle(`${interaction.options.get('showtasktype').value} tasks for ${interaction.user.username}`)
-                .setDescription(text || 'NO TASKS HOW ABOUT BEING PRODUCTIVE NERD')
+                .setDescription(text || '**NO TASKS HOW ABOUT BEING PRODUCTIVE NERD**')
                 .setImage('https://i.imgur.com/fx5RFJ0.jpeg')
                 .setTimestamp()
                 .setFooter({ text: 'You got meowed on NERD' });
