@@ -62,7 +62,7 @@ module.exports = {
             interaction.reply({ embeds: [tasksEmbed], ephemeral: true });   
         } catch (error) {
             console.log(error);
-            interaction.reply( { content: `Error finding tasks: ${error}`, ephemeral: true });
+            interaction.reply({ content: `Error finding tasks: ${error}`, ephemeral: true });
         }
     },
 };
